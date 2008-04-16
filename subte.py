@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# coding=iso-8859-1
+# coding=utf-8
 # vim: set ai ts=4 sts=4 textwidth=79 expandtab
 #
 # Copyright (c) 2008 by Juan F. Codagnone <http://juan.zauber.com.ar> 
