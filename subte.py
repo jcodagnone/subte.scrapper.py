@@ -83,7 +83,7 @@ class LineaSubteStatus:
                          estacion (segundos)
         """
         assert isinstance(periodicidad, int), 'periodicidad debe ser entero'
-        assert periodicidad > 0, 'la periodicidad debe ser un entero positivo'
+        assert periodicidad >= -1, 'la periodicidad debe ser un entero'
         assert len(linea), 'la linea debe ser un solo caracter'
         assert len(status) > 0, 'debe especificar un estado'
 
@@ -129,11 +129,16 @@ class SubteScraper:
             # dice algo como: "Servicio Normal"
             status = str(i.contents[2]).strip()
             # dice algo asi como "Trenes cada 3 min. 15 seg."
-            periodicidad = str(i.contents[4]).strip()
-            m = self.rePeriodicidad.match(periodicidad)
-            assert m != None, 'no se pudo parsear la periodicidad de `%s\'' % \
+
+            if len(i.contents) > 4:
+               periodicidad = str(i.contents[4]).strip()
+               m = self.rePeriodicidad.match(periodicidad)
+               assert m != None, 'no se pudo parsear la periodicidad de `%s\'' % \
                                periodicidad
-            periodicidad = int(m.group(1)) * 60 + int(m.group(2))
+               periodicidad = int(m.group(1)) * 60 + int(m.group(2))
+
+            else:
+               periodicidad = -1
             ret.append(LineaSubteStatus(linea, status, periodicidad))
         return StatusSubte(ret, lastUpdate) 
 
